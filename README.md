@@ -67,7 +67,7 @@ $ go run ./cmd/gRPC/client/main.go
 
 
 # Following 12factor app best practices
-1. build on one codebase full tracked from: https://github.com/ydsxiong/summingservice.git
+1. built on one codebase following TDD style, and is full tracked from: https://github.com/ydsxiong/summingservice.git. 
 
 2. Dep is being used for dependencies management for developing and building the microservice
 

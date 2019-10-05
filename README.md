@@ -1,54 +1,60 @@
 # summingservice
 
-# initial set for dev environment:
+-- initial set for dev environment:
+-- install the protoc compiler: brew install protobuf
+-- ensure dep is installed: brew install dep
+-- under the root of project: dep init
+   Thiswill create a folder called “vendor” along with “Gopkg.lock” and “Gopkg.toml” file. 
+   These two files are important to manage different dependencies of our project.
 
-# install the protoc compiler: 
-brew install protobuf
+-- Install Go bindings & Generate Stubs
+--This command will download go bindings into the “vendor” folder: dep ensure --add google.golang.org/grpc github.com/golang/protobuf/protoc-gen-go
 
-# ensure dep is installed
-brew install dep
-
-# under the root of project:
-dep init
-# Thiswill create a folder called “vendor” along with “Gopkg.lock” and “Gopkg.toml” file. 
-# These two files are important to manage different dependencies of our project.
-
-# Install Go bindings & Generate Stubs
-# This command will download go bindings into the “vendor” folder. 
-dep ensure --add google.golang.org/grpc github.com/golang/protobuf/protoc-gen-go
-
-# Install the protoc plugin for Go
+-- Install the protoc plugin for Go
 go get -u google.golang.org/grpc
 go get -u github.com/golang/protobuf/proto
 go get -u github.com/golang/protobuf/protoc-gen-go
 
 
-# Project folder structure:
+-- Project folder structure:
 
-build/  contains sh script for generating new service go files from proto files whenever they are modified.
+build/  
+-- contains sh script for generating new service go files from proto files whenever they are modified.
 
 cmd/
-    client/  # configure a gRPC client to consume the services from remote host over protobuf
-        cli/  # a command line interface for client's use
-    server/  # configure a gRPC server and start it up to serve the services over protobuf
+    client/  
+    -- configure a gRPC client to consume the services from remote host over protobuf
+        cli/  
+        -- a command line interface for client's use
+    server/  
+    -- configure a gRPC server and start it up to serve the services over protobuf
 
-datastore/  # the data storeage to hold the data state by the service and for the service.
-            # currently, only an inmomory store is implemented for testing purpose. the real data store should be implemented as a backing service to the gRPC server.
+datastore/  
+-- the data storeage to hold the data state by the service and for the service. currently, only an inmomory store is implemented for testing purpose. the real data store should be implemented as a backing service to the gRPC server.
 
-gRPC/       # everything in here is internal to the services bounded only to this summing context
-    proto-file/  contains proto files for describing services and domain objects for this microservice.
-    domain/   # protoc generated domain objects go file
-    service/  # protoc generated service go file
-    impl/   # expose service endpoints, containing all business logics for the implementation of the services
+gRPC/       
+    proto-file/  
+    domain/  
+    service/  
+    impl/ 
+-- everything in here is internal to the services bounded only to this summing context
+-- contains proto files for describing services and domain objects for this microservice.
+-- protoc generated domain objects go file
+-- protoc generated service go file
+-- expose service endpoints, containing all business logics for the implementation of the services
 
-vendor/      # outcome from executing dep init and dep ensure commands.
+vendor/      
 Gopkg.lock
 Gopkg.toml 
+-- outcome from executing dep init and dep ensure commands.
 
-Dockerfile    # define the docker image for this microservice in the CI/CD pipeline
-k8s-deployment.yml # k8 descriptions for deploy and create service into kubernettes 
+Dockerfile    
+k8s-deployment.yml
+-- define the docker image for this microservice in the CI/CD pipeline
+-- k8 descriptions for deploy and create service into kubernettes 
 
-Makefile   # a handy script for bring all steps together, test, build, pack, deploy. this can be build into CI/CD pipline in the cloud
+Makefile
+-- a handy script for bring all steps together, test, build, pack, deploy. this can be build into CI/CD pipline in the cloud
 
 
 # Run the gRPC server and then client app for testing the flow on local dev box:

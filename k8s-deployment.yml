@@ -1,0 +1,36 @@
+---
+apiVersion: apps/v1
+kind: Deployment                 
+metadata:
+  name: summing-deploy        
+spec:
+  replicas: 2                
+  selector:
+    matchLabels:
+      app: summing-deploy
+  template:    
+    metadata:
+      labels:        
+        app: summing-deploy 
+    spec:               
+      containers:
+      - name: summing-deploy
+        image: xman2019/sum-microservice:${TAG} 
+        imagePullPolicy: IfNotPresent
+        ports:
+          - containerPort: ${CONTAINER_PORT}
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: summing-service
+spec:
+  type: NodePort 
+  ports: 
+  - name: tcp
+    port: ${PUBLIC_PORT}
+    targetPort: ${CONTAINER_PORT}
+  selector:
+    app: summing-deploy 
+

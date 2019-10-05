@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package service;
+
+option go_package = "summingservice/gRPC/service";
+
+import "github.com/ydsxiong/summingservice/gRPC/proto-files/domain/numbers.proto";
+
+service SumService {
+	rpc sum (domain.SumRequest) returns (domain.SumResponse);
+	rpc getAllSums (domain.SumFilter) returns (stream domain.SumResponse);
+}
+ 
+
+

@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package domain;
+
+option go_package = "summingservice/gRPC/domain";
+
+message SumRequest {
+	string name = 1;
+	repeated int64 numbers  = 2;
+}
+
+message SumResponse {
+	domain.SumRequest input = 1;
+	int64 sum  = 2;
+}
+
+message SumFilter {    
+  string keyword = 1;
+}

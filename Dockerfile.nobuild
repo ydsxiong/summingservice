@@ -1,0 +1,14 @@
+FROM golang:1.11-stretch
+ADD . /app/src/summingservice
+ENV GOPATH=/app
+
+RUN go get -u google.golang.org/grpc \
+ && go get -u github.com/golang/protobuf/proto \
+ && go get -u github.com/prometheus/client_golang/prometheus \
+ && go get -u github.com/go-kit/kit
+
+WORKDIR /app/src/summingservice/cmd/server
+
+ENV SERVICE_TCP_PORT=9000
+
+CMD ["go", "run", "main.go"]

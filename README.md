@@ -15,7 +15,6 @@ go get -u google.golang.org/grpc
 go get -u github.com/golang/protobuf/proto
 go get -u github.com/golang/protobuf/protoc-gen-go
 
-
 -- Project folder structure:
 
 build/  
@@ -36,7 +35,8 @@ gRPC/
     proto-file/  
     domain/  
     service/  
-    impl/ 
+    impl/
+
 -- everything in here is internal to the services bounded only to this summing context
 -- contains proto files for describing services and domain objects for this microservice.
 -- protoc generated domain objects go file
@@ -45,7 +45,7 @@ gRPC/
 
 vendor/      
 Gopkg.lock
-Gopkg.toml 
+Gopkg.toml
 -- outcome from executing dep init and dep ensure commands.
 
 Dockerfile    

@@ -96,11 +96,17 @@ $ go run ./cmd/gRPC/client/main.go
 11. the service handle is backed by middlewares for logging, instrumenting, etc. and the app is logged wherever applicable.
 
 #  the service extensibility 
-This service is designed to communicate with external data store via a designated interface: datastore/store.go.
-And this interface can be implemented in various ways without impacting the service internal definitions and behaviours, e.g.
-a backing database implementation to handle the data persistence, or a backing event store implementation for handling events or publishing further messages from those events, all can be easily added into the datastore package with no change required at all for the service internal core package gRPC.
+This data/state communication has been abstracted outside of the service core package and into a interface: datastore/store.go.
+And this interface may be implemented in various ways without impacting the service internal core behaviours. 
+It could further abstract out the concerns, such that it may
 
+1. include a database client to send/receive data to/from a external backing db server service
+2. include a event store client to generate and save events to a external backing event store server
+3. include a message broker client to publish events to a remote external messaging broker server
+
+Any extra new features and services around the data or state handling here can be added in here without impacting this existing gRPC server sum service.
 
 # service accessibility
 When deployed into a internal network, this service can be mapped to a public port and IP address by the host environment like kubernetes in the cloud.
+But usually webservice is designed to sit behind a public server service or gateway/Reverse proxy/Nignx service, not directly exposed on the public network. 
 

@@ -7,14 +7,11 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/ydsxiong/summingservice/gRPC/cli"
+	"github.com/ydsxiong/summingservice/cmd/gRPC/client/cli"
 	"github.com/ydsxiong/summingservice/gRPC/domain"
 	"github.com/ydsxiong/summingservice/gRPC/service"
 	"google.golang.org/grpc"
 )
-
-var dummyStdIn = &bytes.Buffer{}
-var dummyStdOut = &bytes.Buffer{}
 
 type mockSumQueryResponse struct {
 	result []*domain.SumResponse

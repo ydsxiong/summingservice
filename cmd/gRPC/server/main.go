@@ -44,7 +44,7 @@ func main() {
 
 	//
 	// config gprc server:
-	gRPCServer, netListener, port, err := configGRPCServer()
+	gRPCServer, err := configGRPCServer()
 	if err != nil {
 		log.Fatalln(err)
 	}
@@ -59,8 +59,13 @@ func main() {
 
 	// start up the server
 	go func() {
-		log.Println("Listening on port:", port)
-		errChan <- gRPCServer.Serve(netListener)
+		netListener, portstr, err := getNetListener()
+		if err != nil {
+			errChan <- err
+		} else {
+			log.Println("Listening on port:", portstr)
+			errChan <- gRPCServer.Serve(netListener)
+		}
 	}()
 
 	log.Fatalln(<-errChan)
@@ -80,16 +85,10 @@ func getNetListener() (net.Listener, string, error) {
 	return lis, strconv.Itoa(port), nil
 }
 
-func configGRPCServer() (*grpc.Server, net.Listener, string, error) {
-	netListener, portstr, err := getNetListener()
-	if err != nil {
-		return nil, nil, "", err
-	}
+func configGRPCServer() (*grpc.Server, error) {
 	gRPCServer := grpc.NewServer()
-
 	service.RegisterSumServiceServer(gRPCServer, setupServerHandler())
-
-	return gRPCServer, netListener, portstr, nil
+	return gRPCServer, nil
 }
 
 func setupServerHandler() service.SumServiceServer {
